@@ -6,6 +6,7 @@ const User = require('../schemes/User');
 const keys = require('../config/keys');
 const validateLoginInput = require('../valildator/login');
 const validateRegisterInput = require('../valildator/register'); 
+const msg = require('../utils/massageManager');
 
 router.route('/login').post((req, res) => {
     
@@ -74,12 +75,13 @@ router.route('/register').post((req, res) => {
         if (user) {
             return res.status(400).json({email: "Email already exists"});
         } else {
-            const newUser = new User({
-                name: req.body.name,
-                surname: req.body.surname,
-                email: req.body.email, 
-                password: req.body.password 
-            });
+
+            const name = req.body.name;
+            const surname = req.body.surname;
+            const email = req.body.email;
+            const password = req.body.password;
+
+            const newUser = new User({ name, surname, email, password });
             // hashing password
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -91,6 +93,7 @@ router.route('/register').post((req, res) => {
                         .catch(err = console.log(err));
                 });
             });
+            // msg.massageManager(name, surname, email); logic is working, just create proper email
         };
     });
 });
