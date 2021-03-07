@@ -2,8 +2,8 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 // import routes
-const Auth = require('./router/Auth');
-
+const Auth = require('./router/API/Auth');
+const Listing = require('./router/API/Listing');
 // DB connection
 const dbConnection = require('./db/connect');
 const port = process.env.PORT || 3000
@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/auth', Auth);
+app.use('/api/users', Listing);
 app.use('*', (req, res) => {
     res.status(404).send('Request error!')
 });

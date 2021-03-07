@@ -2,17 +2,18 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../schemes/User');
-const keys = require('../config/keys');
-const validateLoginInput = require('../valildator/login');
-const validateRegisterInput = require('../valildator/register'); 
-const msg = require('../utils/massageManager');
+const User = require('../../schemes/User');
+const keys = require('../../config/keys');
+const validateLoginInput = require('../../valildator/login');
+const validateRegisterInput = require('../../valildator/register'); 
+const msg = require('../../utils/massageManager');
+const auth = require('../middleware/auth');
 
 router.route('/login').post((req, res) => {
     
     const {errors, isValid} = validateLoginInput(req.body);
     
-    // check for validators 
+    // check for validators  
     if (!isValid) {
         return res.status(400).json(errors)
     }
@@ -93,7 +94,7 @@ router.route('/register').post((req, res) => {
                         .catch(err = console.log(err));
                 });
             });
-            // msg.massageManager(name, surname, email); logic is working, just create proper email
+            msg.massageManager(name, surname, email); //logic is working, just create proper email
         };
     });
 });
